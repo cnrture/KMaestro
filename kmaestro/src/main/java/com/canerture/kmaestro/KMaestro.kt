@@ -15,9 +15,10 @@ class KMaestro(
         appId(appId)
     }
 
-    fun appId(appId: String) = commands.add("- appId: $appId")
+    fun appId(appId: String) = commands.add("- appId: $appId\n---")
     fun launchApp() = commands.add("- launchApp")
-    fun click(target: String) = commands.add("- tapOn: \"$target\"")
+    fun clickText(text: String) = commands.add("- tapOn: \"$text\"")
+    fun clickId(id: String) = commands.add("- tapOn:\n    id: \"$id\"")
 
     fun build(): String {
         val yaml = commands.joinToString("\n")

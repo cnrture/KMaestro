@@ -7,7 +7,8 @@ fun main() {
         yamlName = "sample.yaml"
     ).apply {
         launchApp()
-        click("button1")
+        clickText("button1")
+        clickId("button2")
         build()
     }
 }
