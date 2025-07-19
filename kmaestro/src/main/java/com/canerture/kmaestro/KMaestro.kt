@@ -1,5 +1,7 @@
 package com.canerture.kmaestro
 
+import java.io.File
+
 class KMaestro(
     private val appId: String,
     private val path: String,
@@ -7,32 +9,39 @@ class KMaestro(
 ) {
 
     private val commands = mutableListOf<String>()
-    private var currentAppId: String? = null
 
     init {
+        commands.add("# $yamlName\n")
         appId(appId)
     }
 
-    fun appId(appId: String): KMaestro {
-        currentAppId = appId
+    fun appId(appId: String) {
         commands.add("- appId: $appId")
-        return this
     }
 
-    fun launchApp(): KMaestro {
+    fun launchApp() {
         commands.add("- launchApp")
-        return this
     }
 
-    fun click(target: String): KMaestro {
+    fun click(target: String) {
         commands.add("- tapOn: \"$target\"")
-        return this
     }
 
     fun build(): String {
         val yaml = commands.joinToString("\n")
+
+        // Create directory if it doesn't exist
+        val directory = File(path)
+        if (!directory.exists()) {
+            directory.mkdirs()
+        }
+
+        // Create YAML file
+        val fileName = if (yamlName.endsWith(".yaml")) yamlName else "$yamlName.yaml"
+        val file = File(directory, fileName)
+        file.writeText(yaml)
+
         commands.clear()
-        currentAppId = null
         return yaml
     }
 }
