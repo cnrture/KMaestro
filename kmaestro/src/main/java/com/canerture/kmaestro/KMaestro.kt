@@ -15,32 +15,17 @@ class KMaestro(
         appId(appId)
     }
 
-    fun appId(appId: String) {
-        commands.add("- appId: $appId")
-    }
-
-    fun launchApp() {
-        commands.add("- launchApp")
-    }
-
-    fun click(target: String) {
-        commands.add("- tapOn: \"$target\"")
-    }
+    fun appId(appId: String) = commands.add("- appId: $appId")
+    fun launchApp() = commands.add("- launchApp")
+    fun click(target: String) = commands.add("- tapOn: \"$target\"")
 
     fun build(): String {
         val yaml = commands.joinToString("\n")
-
-        // Create directory if it doesn't exist
         val directory = File(path)
-        if (!directory.exists()) {
-            directory.mkdirs()
-        }
-
-        // Create YAML file
+        if (!directory.exists()) directory.mkdirs()
         val fileName = if (yamlName.endsWith(".yaml")) yamlName else "$yamlName.yaml"
         val file = File(directory, fileName)
         file.writeText(yaml)
-
         commands.clear()
         return yaml
     }
