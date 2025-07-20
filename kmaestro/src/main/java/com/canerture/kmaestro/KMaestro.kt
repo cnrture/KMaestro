@@ -204,6 +204,12 @@ class KMaestro(
 
     fun setAirplaneMode(enabled: Boolean) = commands.add("- setAirplaneMode: $enabled")
 
+    fun setLocation(latitude: Double, longitude: Double) {
+        commands.add("- setLocation:")
+        commands.add("    latitude: $latitude")
+        commands.add("    longitude: $longitude")
+    }
+
     fun clickText(text: String) = commands.add("- tapOn: \"$text\"")
 
     fun clickTag(tag: String) = commands.add("- tapOn:\n    id: \"$tag\"")
