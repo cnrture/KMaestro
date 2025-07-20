@@ -97,6 +97,10 @@ class KMaestro(
 
     fun back() = commands.add("- back")
 
+    fun clearState(appId: String = "") {
+        if (appId.isEmpty()) commands.add("- clearState") else commands.add("- clearState: $appId")
+    }
+
     fun clickText(text: String) = commands.add("- tapOn: \"$text\"")
 
     fun clickTag(tag: String) = commands.add("- tapOn:\n    id: \"$tag\"")
