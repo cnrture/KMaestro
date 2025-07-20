@@ -159,6 +159,11 @@ class KMaestro(
         commands.invoke(this)
     }
 
+    fun runFlow(flowName: String) {
+        require(flowName.isNotEmpty()) { "Flow name must not be empty." }
+        commands.add("- runFlow: $flowName")
+    }
+
     fun clickText(text: String) = commands.add("- tapOn: \"$text\"")
 
     fun clickTag(tag: String) = commands.add("- tapOn:\n    id: \"$tag\"")
