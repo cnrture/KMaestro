@@ -149,20 +149,7 @@ class KMaestro(
         commands.add(openUrlCommand.toString())
     }
 
-    fun pressKey(key: KeyType) {
-        val keyCommand = when (key) {
-            KeyType.HOME -> "- pressKey: Home"
-            KeyType.LOCK -> "- pressKey: Lock"
-            KeyType.ENTER -> "- pressKey: Enter"
-            KeyType.BACKSPACE -> "- pressKey: Backspace"
-            KeyType.VOLUME_UP -> "- pressKey: VolumeUp"
-            KeyType.VOLUME_DOWN -> "- pressKey: VolumeDown"
-            KeyType.BACK -> "- pressKey: Back"
-            KeyType.POWER -> "- pressKey: Power"
-            KeyType.TAB -> "- pressKey: Tab"
-        }
-        commands.add(keyCommand)
-    }
+    fun pressKey(key: KeyType) = commands.add("- pressKey: ${key.displayName}")
 
     fun clickText(text: String) = commands.add("- tapOn: \"$text\"")
 
@@ -179,15 +166,15 @@ class KMaestro(
         return yaml
     }
 
-    enum class KeyType {
-        HOME,
-        LOCK,
-        ENTER,
-        BACKSPACE,
-        VOLUME_UP,
-        VOLUME_DOWN,
-        BACK,
-        POWER,
-        TAB
+    enum class KeyType(val displayName: String) {
+        HOME("Home"),
+        LOCK("Lock"),
+        ENTER("Enter"),
+        BACKSPACE("Backspace"),
+        VOLUME_UP("VolumeUp"),
+        VOLUME_DOWN("VolumeDown"),
+        BACK("Back"),
+        POWER("Power"),
+        TAB("Tab"),
     }
 }
