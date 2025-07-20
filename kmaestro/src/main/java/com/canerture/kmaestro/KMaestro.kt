@@ -90,6 +90,11 @@ class KMaestro(
         commands.add(visibilityCommand.toString())
     }
 
+    fun isTrue(condition: String) {
+        require(condition.isNotEmpty()) { "Condition must not be empty." }
+        commands.add("- assertTrue: \"$condition\"")
+    }
+
     fun clickText(text: String) = commands.add("- tapOn: \"$text\"")
 
     fun clickTag(tag: String) = commands.add("- tapOn:\n    id: \"$tag\"")
