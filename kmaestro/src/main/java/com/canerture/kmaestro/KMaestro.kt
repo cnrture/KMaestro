@@ -448,6 +448,8 @@ class KMaestro(
         commands.add("    speed: $speed")
     }
 
+    fun waitForAnimationToEnd(timeout: Int = 5000) = commands.add("- waitForAnimationToEnd:\n    timeout: $timeout")
+
     fun build(): String {
         val yaml = commands.joinToString("\n")
         val directory = File(path)
