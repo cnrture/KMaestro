@@ -250,9 +250,55 @@ class KMaestro(
 
     fun toggleAirplaneMode() = commands.add("- toggleAirplaneMode")
 
-    fun clickText(text: String) = commands.add("- tapOn: \"$text\"")
+    fun clickText(
+        text: String,
+        repeat: Int = 1,
+        delay: Int = 100,
+        retryTapIfNoChange: Boolean = false,
+        waitToSettleTimeoutMs: Int? = null,
+    ) {
+        commands.add("- tapOn: $text")
+        if (repeat > 1) {
+            commands.add("    repeat: $repeat")
+            commands.add("    delay: $delay")
+        }
+        if (retryTapIfNoChange) commands.add("    retryTapIfNoChange: true")
+        waitToSettleTimeoutMs?.let { commands.add("    waitToSettleTimeoutMs: $it") }
+    }
 
-    fun clickTag(tag: String) = commands.add("- tapOn:\n    id: \"$tag\"")
+    fun clickTag(
+        tag: String,
+        repeat: Int = 1,
+        delay: Int = 100,
+        retryTapIfNoChange: Boolean = false,
+        waitToSettleTimeoutMs: Int? = null
+    ) {
+        commands.add("- tapOn:\n    id: $tag")
+        if (repeat > 1) {
+            commands.add("    repeat: $repeat")
+            commands.add("    delay: $delay")
+        }
+        if (retryTapIfNoChange) commands.add("    retryTapIfNoChange: true")
+        waitToSettleTimeoutMs?.let { commands.add("    waitToSettleTimeoutMs: $it") }
+    }
+
+    fun clickCoordinate(
+        x: Int,
+        y: Int,
+        repeat: Int = 1,
+        delay: Int = 100,
+        retryTapIfNoChange: Boolean = false,
+        waitToSettleTimeoutMs: Int? = null
+    ) {
+        require(x >= 0 && y >= 0) { "Coordinates must be non-negative." }
+        commands.add("- tapOn:\n    point: $x, $y")
+        if (repeat > 1) {
+            commands.add("    repeat: $repeat")
+            commands.add("    delay: $delay")
+        }
+        if (retryTapIfNoChange) commands.add("    retryTapIfNoChange: true")
+        waitToSettleTimeoutMs?.let { commands.add("    waitToSettleTimeoutMs: $it") }
+    }
 
     fun build(): String {
         val yaml = commands.joinToString("\n")
