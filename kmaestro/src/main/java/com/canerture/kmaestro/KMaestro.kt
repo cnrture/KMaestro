@@ -214,6 +214,10 @@ class KMaestro(
 
     fun stopRecording() = commands.add("- stopRecording")
 
+    fun stopApp(appId: String = "") {
+        if (appId.isEmpty()) commands.add("- stopApp") else commands.add("- stopApp: $appId")
+    }
+
     fun clickText(text: String) = commands.add("- tapOn: \"$text\"")
 
     fun clickTag(tag: String) = commands.add("- tapOn:\n    id: \"$tag\"")
