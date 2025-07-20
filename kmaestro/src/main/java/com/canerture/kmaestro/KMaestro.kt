@@ -202,6 +202,8 @@ class KMaestro(
         commands.add("    centerElement: $centerElement")
     }
 
+    fun setAirplaneMode(enabled: Boolean) = commands.add("- setAirplaneMode: $enabled")
+
     fun clickText(text: String) = commands.add("- tapOn: \"$text\"")
 
     fun clickTag(tag: String) = commands.add("- tapOn:\n    id: \"$tag\"")
