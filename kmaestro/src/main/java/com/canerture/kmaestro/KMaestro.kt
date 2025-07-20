@@ -166,6 +166,42 @@ class KMaestro(
 
     fun scroll() = commands.add("- scroll")
 
+    fun scrollUntilVisibleText(
+        text: String,
+        direction: Direction = Direction.DOWN,
+        timeout: Int = 20000,
+        speed: Int = 40,
+        visibilityPercentage: Int = 100,
+        centerElement: Boolean = false,
+    ) {
+        require(text.isNotEmpty()) { "Text must not be empty." }
+        commands.add("- scrollUntilVisible:")
+        commands.add("    element:\n      text: \"$text\"")
+        commands.add("    direction: ${direction.displayName}")
+        commands.add("    timeout: $timeout")
+        commands.add("    speed: $speed")
+        commands.add("    visibilityPercentage: $visibilityPercentage")
+        commands.add("    centerElement: $centerElement")
+    }
+
+    fun scrollUntilVisibleTag(
+        tag: String,
+        direction: Direction = Direction.DOWN,
+        timeout: Int = 20000,
+        speed: Int = 40,
+        visibilityPercentage: Int = 100,
+        centerElement: Boolean = false,
+    ) {
+        require(tag.isNotEmpty()) { "Tag must not be empty." }
+        commands.add("- scrollUntilVisible:")
+        commands.add("    element:\n      text: \"$tag\"")
+        commands.add("    direction: ${direction.displayName}")
+        commands.add("    timeout: $timeout")
+        commands.add("    speed: $speed")
+        commands.add("    visibilityPercentage: $visibilityPercentage")
+        commands.add("    centerElement: $centerElement")
+    }
+
     fun clickText(text: String) = commands.add("- tapOn: \"$text\"")
 
     fun clickTag(tag: String) = commands.add("- tapOn:\n    id: \"$tag\"")
@@ -211,5 +247,12 @@ class KMaestro(
         TV_INPUT_HDMI_1("TV Input HDMI 1"),
         TV_INPUT_HDMI_2("TV Input HDMI 2"),
         TV_INPUT_HDMI_3("TV Input HDMI 3"),
+    }
+
+    enum class Direction(val displayName: String) {
+        UP("UP"),
+        DOWN("DOWN"),
+        LEFT("LEFT"),
+        RIGHT("RIGHT"),
     }
 }
