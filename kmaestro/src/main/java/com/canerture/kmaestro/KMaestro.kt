@@ -137,6 +137,18 @@ class KMaestro(
 
     fun killApp() = commands.add("- killApp")
 
+    fun openUrl(
+        url: String,
+        autoVerify: Boolean = false,
+        forceBrowser: Boolean = false,
+    ) {
+        require(url.isNotEmpty()) { "URL must not be empty." }
+        val openUrlCommand = StringBuilder("- openUrl:\n    link: \"$url\"")
+        if (autoVerify) openUrlCommand.append("\n    autoVerify: true")
+        if (forceBrowser) openUrlCommand.append("\n    browser: true")
+        commands.add(openUrlCommand.toString())
+    }
+
     fun clickText(text: String) = commands.add("- tapOn: \"$text\"")
 
     fun clickTag(tag: String) = commands.add("- tapOn:\n    id: \"$tag\"")
