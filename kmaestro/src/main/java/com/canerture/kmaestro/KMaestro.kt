@@ -101,6 +101,10 @@ class KMaestro(
         if (appId.isEmpty()) commands.add("- clearState") else commands.add("- clearState: $appId")
     }
 
+    fun copyText(tag: String) = commands.add("- copyTextFrom:\n    id: \"$tag\"")
+
+    fun pasteText() = commands.add("- pasteText")
+
     fun clickText(text: String) = commands.add("- tapOn: \"$text\"")
 
     fun clickTag(tag: String) = commands.add("- tapOn:\n    id: \"$tag\"")
