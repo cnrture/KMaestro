@@ -438,6 +438,16 @@ class KMaestro(
         waitToSettleTimeoutMs?.let { commands.add("    waitToSettleTimeoutMs: $it") }
     }
 
+    fun travel(points: Map<Double, Double>, speed: Int = 7900) {
+        require(points.isNotEmpty()) { "Points must not be empty." }
+        commands.add("- travel:")
+        commands.add("    points:")
+        points.forEach { (latitude, longitude) ->
+            commands.add("    - $latitude,$longitude")
+        }
+        commands.add("    speed: $speed")
+    }
+
     fun build(): String {
         val yaml = commands.joinToString("\n")
         val directory = File(path)
