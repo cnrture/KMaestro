@@ -109,6 +109,8 @@ class KMaestro(
 
     fun clearText(characters: Int = 50) = commands.add("- eraseText: $characters")
 
+    fun hideKeyboard() = commands.add("- hideKeyboard")
+
     fun clickText(text: String) = commands.add("- tapOn: \"$text\"")
 
     fun clickTag(tag: String) = commands.add("- tapOn:\n    id: \"$tag\"")
