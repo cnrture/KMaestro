@@ -95,6 +95,8 @@ class KMaestro(
         commands.add("- assertTrue: \"$condition\"")
     }
 
+    fun back() = commands.add("- back")
+
     fun clickText(text: String) = commands.add("- tapOn: \"$text\"")
 
     fun clickTag(tag: String) = commands.add("- tapOn:\n    id: \"$tag\"")
