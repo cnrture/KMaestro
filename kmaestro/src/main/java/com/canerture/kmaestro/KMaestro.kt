@@ -3,7 +3,6 @@ package com.canerture.kmaestro
 import java.io.File
 
 class KMaestro(
-    private val appId: String,
     private val path: String,
     private val yamlName: String,
 ) {
@@ -12,10 +11,25 @@ class KMaestro(
 
     init {
         commands.add("# $yamlName\n")
-        commands.add("- appId: $appId\n---")
     }
 
-    fun launchApp() = commands.add("- launchApp")
+    fun launchApp(
+        packageName: String,
+        arguments: Map<String, Any> = emptyMap(),
+    ) {
+        require(packageName.isNotEmpty()) { "App ID must not be empty." }
+        val launchCommand = StringBuilder("- launchApp:\n    appId: \"$packageName\"")
+        if (arguments.isNotEmpty()) {
+            require(arguments.values.none { it !is String && it !is Boolean && it !is Double && it !is Int }) {
+                "Arguments must be of type String, Boolean, Double, or Integer."
+            }
+            launchCommand.append("\n    arguments:")
+            arguments.forEach { (key, value) ->
+                launchCommand.append("\n      $key: $value")
+            }
+        }
+        commands.add(launchCommand.toString())
+    }
 
     fun addMedia(vararg path: String) {
         commands.add("- addMedia:")
