@@ -111,6 +111,16 @@ class KMaestro(
 
     fun hideKeyboard() = commands.add("- hideKeyboard")
 
+    fun setText(text: String) = commands.add("- inputText: \"$text\"")
+
+    fun setRandomEmail() = commands.add("- inputRandomEmail")
+
+    fun setRandomPersonName() = commands.add("- inputRandomPersonName")
+
+    fun setRandomNumber(length: Int = 8) = commands.add("- inputRandomNumber:\n    length: $length")
+
+    fun setRandomText(length: Int = 8) = commands.add("- inputRandomText:\n    length: $length")
+
     fun clickText(text: String) = commands.add("- tapOn: \"$text\"")
 
     fun clickTag(tag: String) = commands.add("- tapOn:\n    id: \"$tag\"")
