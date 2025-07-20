@@ -320,32 +320,24 @@ class KMaestro(
 
     fun doubleClickText(
         text: String,
-        repeat: Int = 1,
         delay: Int = 100,
         retryTapIfNoChange: Boolean = false,
         waitToSettleTimeoutMs: Int? = null,
     ) {
-        commands.add("- tapOn: $text")
-        if (repeat > 1) {
-            commands.add("    repeat: $repeat")
-            commands.add("    delay: $delay")
-        }
+        commands.add("- doubleTapOn: $text")
+        commands.add("    delay: $delay")
         if (retryTapIfNoChange) commands.add("    retryTapIfNoChange: true")
         waitToSettleTimeoutMs?.let { commands.add("    waitToSettleTimeoutMs: $it") }
     }
 
     fun doubleClickTag(
         tag: String,
-        repeat: Int = 1,
         delay: Int = 100,
         retryTapIfNoChange: Boolean = false,
         waitToSettleTimeoutMs: Int? = null
     ) {
-        commands.add("- tapOn:\n    id: $tag")
-        if (repeat > 1) {
-            commands.add("    repeat: $repeat")
-            commands.add("    delay: $delay")
-        }
+        commands.add("- doubleTapOn:\n    id: $tag")
+        commands.add("    delay: $delay")
         if (retryTapIfNoChange) commands.add("    retryTapIfNoChange: true")
         waitToSettleTimeoutMs?.let { commands.add("    waitToSettleTimeoutMs: $it") }
     }
@@ -353,17 +345,13 @@ class KMaestro(
     fun doubleClickSpecificPoint(
         percentageX: Int,
         percentageY: Int,
-        repeat: Int = 1,
         delay: Int = 100,
         retryTapIfNoChange: Boolean = false,
         waitToSettleTimeoutMs: Int? = null
     ) {
         require(percentageX >= 0 && percentageY >= 0) { "Percentage coordinates must be non-negative." }
-        commands.add("- tapOn:\n    point: $percentageX, $percentageY")
-        if (repeat > 1) {
-            commands.add("    repeat: $repeat")
-            commands.add("    delay: $delay")
-        }
+        commands.add("- doubleTapOn:\n    point: $percentageX, $percentageY")
+        commands.add("    delay: $delay")
         if (retryTapIfNoChange) commands.add("    retryTapIfNoChange: true")
         waitToSettleTimeoutMs?.let { commands.add("    waitToSettleTimeoutMs: $it") }
     }
@@ -371,17 +359,13 @@ class KMaestro(
     fun doubleClickCoordinate(
         x: Int,
         y: Int,
-        repeat: Int = 1,
         delay: Int = 100,
         retryTapIfNoChange: Boolean = false,
         waitToSettleTimeoutMs: Int? = null
     ) {
         require(x >= 0 && y >= 0) { "Coordinates must be non-negative." }
-        commands.add("- tapOn:\n    point: $x, $y")
-        if (repeat > 1) {
-            commands.add("    repeat: $repeat")
-            commands.add("    delay: $delay")
-        }
+        commands.add("- doubleTapOn:\n    point: $x, $y")
+        commands.add("    delay: $delay")
         if (retryTapIfNoChange) commands.add("    retryTapIfNoChange: true")
         waitToSettleTimeoutMs?.let { commands.add("    waitToSettleTimeoutMs: $it") }
     }
