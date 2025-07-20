@@ -14,20 +14,44 @@ class KMaestro(
     }
 
     fun launchApp(
-        packageName: String,
+        appId: String? = null,
+        clearState: Boolean = false,
+        clearKeychain: Boolean = false,
+        stopApp: Boolean = true,
+        permissions: Map<String, String>? = null,
         arguments: Map<String, Any> = emptyMap(),
     ) {
-        require(packageName.isNotEmpty()) { "App ID must not be empty." }
-        val launchCommand = StringBuilder("- launchApp:\n    appId: \"$packageName\"")
-        if (arguments.isNotEmpty()) {
-            require(arguments.values.none { it !is String && it !is Boolean && it !is Double && it !is Int }) {
-                "Arguments must be of type String, Boolean, Double, or Integer."
+        val launchCommand = StringBuilder("- launchApp")
+
+        if (appId != null || clearState || clearKeychain || !stopApp || permissions != null || arguments.isNotEmpty()) {
+            launchCommand.append(":")
+            appId?.let { launchCommand.append("\n    appId: \"$it\"") }
+            if (clearState) launchCommand.append("\n    clearState: true")
+            if (clearKeychain) launchCommand.append("\n    clearKeychain: true")
+            if (!stopApp) launchCommand.append("\n    stopApp: false")
+
+            permissions?.let { perms ->
+                launchCommand.append("\n    permissions:")
+                perms.forEach { (key, value) ->
+                    launchCommand.append("\n      $key: \"$value\"")
+                }
             }
-            launchCommand.append("\n    arguments:")
-            arguments.forEach { (key, value) ->
-                launchCommand.append("\n      $key: $value")
+
+            if (arguments.isNotEmpty()) {
+                require(arguments.values.none { it !is String && it !is Boolean && it !is Double && it !is Int }) {
+                    "Arguments must be of type String, Boolean, Double, or Integer."
+                }
+                launchCommand.append("\n    arguments:")
+                arguments.forEach { (key, value) ->
+                    val formattedValue = when (value) {
+                        is String -> "\"$value\""
+                        else -> value.toString()
+                    }
+                    launchCommand.append("\n      $key: $formattedValue")
+                }
             }
         }
+
         commands.add(launchCommand.toString())
     }
 
@@ -36,165 +60,256 @@ class KMaestro(
         path.forEach { commands.add("    - \"$it\"") }
     }
 
-    fun isVisibleText(
-        text: String,
+    fun assertVisible(
+        text: String? = null,
+        id: String? = null,
         enabled: Boolean? = null,
         checked: Boolean? = null,
-        focuses: Boolean? = null,
+        focused: Boolean? = null,
         selected: Boolean? = null,
+        index: Int? = null,
     ) {
-        require(text.isNotEmpty()) { "Text must not be empty." }
-        val visibilityCommand = StringBuilder("- assertVisible:\n")
-        if (text.isNotEmpty()) visibilityCommand.append("    text: \"$text\"\n")
-        enabled?.let { visibilityCommand.append("    enabled: $it\n") }
-        checked?.let { visibilityCommand.append("    checked: $it\n") }
-        focuses?.let { visibilityCommand.append("    focused: $it\n") }
-        selected?.let { visibilityCommand.append("    selected: $it\n") }
-        commands.add(visibilityCommand.toString())
+        require(text != null || id != null) { "Either text or id must be provided." }
+        val visibilityCommand = StringBuilder("- assertVisible:")
+
+        if (text != null && id == null) {
+            visibilityCommand.append(" \"$text\"")
+        } else {
+            visibilityCommand.append("\n")
+            text?.let { visibilityCommand.append("    text: \"$it\"\n") }
+            id?.let { visibilityCommand.append("    id: \"$it\"\n") }
+            enabled?.let { visibilityCommand.append("    enabled: $it\n") }
+            checked?.let { visibilityCommand.append("    checked: $it\n") }
+            focused?.let { visibilityCommand.append("    focused: $it\n") }
+            selected?.let { visibilityCommand.append("    selected: $it\n") }
+            index?.let { visibilityCommand.append("    index: $it\n") }
+        }
+
+        commands.add(visibilityCommand.toString().trimEnd())
     }
 
-    fun isVisibleTag(
-        tag: String = "",
+    fun assertNotVisible(
+        text: String? = null,
+        id: String? = null,
         enabled: Boolean? = null,
         checked: Boolean? = null,
-        focuses: Boolean? = null,
+        focused: Boolean? = null,
         selected: Boolean? = null,
+        index: Int? = null,
     ) {
-        require(tag.isNotEmpty()) { "Tag must not be empty." }
-        val visibilityCommand = StringBuilder("- assertVisible:\n")
-        if (tag.isNotEmpty()) visibilityCommand.append("    id: \"$tag\"\n")
-        enabled?.let { visibilityCommand.append("    enabled: $it\n") }
-        checked?.let { visibilityCommand.append("    checked: $it\n") }
-        focuses?.let { visibilityCommand.append("    focused: $it\n") }
-        selected?.let { visibilityCommand.append("    selected: $it\n") }
-        commands.add(visibilityCommand.toString())
+        require(text != null || id != null) { "Either text or id must be provided." }
+        val visibilityCommand = StringBuilder("- assertNotVisible:")
+
+        if (text != null && id == null && enabled == null && checked == null && focused == null && selected == null && index == null) {
+            visibilityCommand.append(" \"$text\"")
+        } else {
+            visibilityCommand.append("\n")
+            text?.let { visibilityCommand.append("    text: \"$it\"\n") }
+            id?.let { visibilityCommand.append("    id: \"$it\"\n") }
+            enabled?.let { visibilityCommand.append("    enabled: $it\n") }
+            checked?.let { visibilityCommand.append("    checked: $it\n") }
+            focused?.let { visibilityCommand.append("    focused: $it\n") }
+            selected?.let { visibilityCommand.append("    selected: $it\n") }
+            index?.let { visibilityCommand.append("    index: $it\n") }
+        }
+
+        commands.add(visibilityCommand.toString().trimEnd())
     }
 
-    fun isInvisibleText(
-        text: String,
-        enabled: Boolean? = null,
-        checked: Boolean? = null,
-        focuses: Boolean? = null,
-        selected: Boolean? = null,
-    ) {
-        require(text.isNotEmpty()) { "Text must not be empty." }
-        val visibilityCommand = StringBuilder("- assertNotVisible:\n")
-        if (text.isNotEmpty()) visibilityCommand.append("    text: \"$text\"\n")
-        enabled?.let { visibilityCommand.append("    enabled: $it\n") }
-        checked?.let { visibilityCommand.append("    checked: $it\n") }
-        focuses?.let { visibilityCommand.append("    focused: $it\n") }
-        selected?.let { visibilityCommand.append("    selected: $it\n") }
-        commands.add(visibilityCommand.toString())
-    }
-
-    fun isInvisibleTag(
-        tag: String = "",
-        enabled: Boolean? = null,
-        checked: Boolean? = null,
-        focuses: Boolean? = null,
-        selected: Boolean? = null,
-    ) {
-        require(tag.isNotEmpty()) { "Tag must not be empty." }
-        val visibilityCommand = StringBuilder("- assertNotVisible:\n")
-        if (tag.isNotEmpty()) visibilityCommand.append("    id: \"$tag\"\n")
-        enabled?.let { visibilityCommand.append("    enabled: $it\n") }
-        checked?.let { visibilityCommand.append("    checked: $it\n") }
-        focuses?.let { visibilityCommand.append("    focused: $it\n") }
-        selected?.let { visibilityCommand.append("    selected: $it\n") }
-        commands.add(visibilityCommand.toString())
-    }
-
-    fun isTrue(condition: String) {
+    fun assertTrue(condition: String) {
         require(condition.isNotEmpty()) { "Condition must not be empty." }
         commands.add("- assertTrue: \"$condition\"")
     }
 
-    fun back() = commands.add("- back")
-
-    fun clearState(appId: String = "") {
-        if (appId.isEmpty()) commands.add("- clearState") else commands.add("- clearState: $appId")
+    fun assertWithAI(description: String) {
+        require(description.isNotEmpty()) { "Description must not be empty." }
+        commands.add("- assertWithAI: \"$description\"")
     }
 
-    fun copyText(tag: String) = commands.add("- copyTextFrom:\n    id: \"$tag\"")
+    fun assertNoDefectsWithAI() {
+        commands.add("- assertNoDefectsWithAi")
+    }
+
+    fun back() = commands.add("- back")
+
+    fun clearKeychain() = commands.add("- clearKeychain")
+
+    fun clearState(appId: String? = null) {
+        if (appId == null) {
+            commands.add("- clearState")
+        } else {
+            commands.add("- clearState: \"$appId\"")
+        }
+    }
+
+    fun copyTextFrom(
+        text: String? = null,
+        id: String? = null
+    ) {
+        require(text != null || id != null) { "Either text or id must be provided." }
+        val copyCommand = StringBuilder("- copyTextFrom:")
+
+        if (text != null && id == null) {
+            copyCommand.append(" \"$text\"")
+        } else {
+            copyCommand.append("\n")
+            text?.let { copyCommand.append("    text: \"$it\"\n") }
+            id?.let { copyCommand.append("    id: \"$it\"\n") }
+        }
+
+        commands.add(copyCommand.toString().trimEnd())
+    }
 
     fun pasteText() = commands.add("- pasteText")
 
-    fun evalScript(script: String) = commands.add("- evalScript: \"$script\"")
+    fun evalScript(script: String) {
+        require(script.isNotEmpty()) { "Script must not be empty." }
+        commands.add("- evalScript: \"$script\"")
+    }
 
-    fun clearText(characters: Int = 50) = commands.add("- eraseText: $characters")
+    fun eraseText(charactersToErase: Int? = null) {
+        if (charactersToErase == null) {
+            commands.add("- eraseText")
+        } else {
+            commands.add("- eraseText: $charactersToErase")
+        }
+    }
+
+    fun extendedWaitUntil(
+        visible: Map<String, Any>? = null,
+        notVisible: Map<String, Any>? = null,
+        timeout: Int = 10000
+    ) {
+        val waitCommand = StringBuilder("- extendedWaitUntil:\n")
+        waitCommand.append("    timeout: $timeout\n")
+
+        visible?.let {
+            waitCommand.append("    visible:\n")
+            it.forEach { (key, value) ->
+                val formattedValue = if (value is String) "\"$value\"" else value.toString()
+                waitCommand.append("      $key: $formattedValue\n")
+            }
+        }
+
+        notVisible?.let {
+            waitCommand.append("    notVisible:\n")
+            it.forEach { (key, value) ->
+                val formattedValue = if (value is String) "\"$value\"" else value.toString()
+                waitCommand.append("      $key: $formattedValue\n")
+            }
+        }
+
+        commands.add(waitCommand.toString().trimEnd())
+    }
+
+    fun extractTextWithAI(description: String): String {
+        require(description.isNotEmpty()) { "Description must not be empty." }
+        commands.add("- extractTextWithAI: \"$description\"")
+        return "\${output.extractedText}" // Placeholder for extracted text reference
+    }
 
     fun hideKeyboard() = commands.add("- hideKeyboard")
 
-    fun setText(text: String) = commands.add("- inputText: \"$text\"")
+    fun inputText(text: String) {
+        require(text.isNotEmpty()) { "Text must not be empty." }
+        commands.add("- inputText: \"$text\"")
+    }
 
-    fun setRandomEmail() = commands.add("- inputRandomEmail")
+    fun inputRandomEmail() = commands.add("- inputRandomEmail")
 
-    fun setRandomPersonName() = commands.add("- inputRandomPersonName")
+    fun inputRandomPersonName() = commands.add("- inputRandomPersonName")
 
-    fun setRandomNumber(length: Int = 8) = commands.add("- inputRandomNumber:\n    length: $length")
+    fun inputRandomNumber(length: Int = 8) = commands.add("- inputRandomNumber:\n    length: $length")
 
-    fun setRandomText(length: Int = 8) = commands.add("- inputRandomText:\n    length: $length")
+    fun inputRandomText(length: Int = 8) = commands.add("- inputRandomText:\n    length: $length")
 
-    fun killApp() = commands.add("- killApp")
+    fun killApp(appId: String? = null) {
+        if (appId == null) {
+            commands.add("- killApp")
+        } else {
+            commands.add("- killApp: \"$appId\"")
+        }
+    }
 
-    fun openUrl(
-        url: String,
-        autoVerify: Boolean = false,
-        forceBrowser: Boolean = false,
-    ) {
+    fun openLink(url: String, autoVerify: Boolean? = null, browser: Boolean? = null) {
         require(url.isNotEmpty()) { "URL must not be empty." }
-        val openUrlCommand = StringBuilder("- openUrl:\n    link: \"$url\"")
-        if (autoVerify) openUrlCommand.append("\n    autoVerify: true")
-        if (forceBrowser) openUrlCommand.append("\n    browser: true")
-        commands.add(openUrlCommand.toString())
+        val openCommand = StringBuilder("- openLink:")
+
+        if (autoVerify == null && browser == null) {
+            openCommand.append(" \"$url\"")
+        } else {
+            openCommand.append("\n    link: \"$url\"")
+            autoVerify?.let { openCommand.append("\n    autoVerify: $it") }
+            browser?.let { openCommand.append("\n    browser: $it") }
+        }
+
+        commands.add(openCommand.toString())
     }
 
     fun pressKey(key: KeyType) = commands.add("- pressKey: ${key.displayName}")
 
-    fun repeat(
-        times: Int = 1,
-        commands: (KMaestro) -> Unit,
-    ) {
-        this.commands.add("- repeat:\n    times: $times")
-        commands.invoke(this)
+    fun repeat(times: Int, commands: List<String>) {
+        this.commands.add("- repeat:")
+        this.commands.add("    times: $times")
+        this.commands.add("    commands:")
+        commands.forEach { command ->
+            this.commands.add("      $command")
+        }
+    }
+
+    fun retry(maxRetries: Int = 3, commands: List<String>) {
+        this.commands.add("- retry:")
+        this.commands.add("    maxRetries: $maxRetries")
+        this.commands.add("    commands:")
+        commands.forEach { command ->
+            this.commands.add("      $command")
+        }
     }
 
     fun runFlow(flowName: String) {
         require(flowName.isNotEmpty()) { "Flow name must not be empty." }
-        commands.add("- runFlow: $flowName")
+        commands.add("- runFlow: \"$flowName\"")
     }
 
-    fun scroll() = commands.add("- scroll")
+    fun runScript(script: String, env: Map<String, String>? = null) {
+        require(script.isNotEmpty()) { "Script must not be empty." }
+        val scriptCommand = StringBuilder("- runScript:")
 
-    fun scrollUntilVisibleText(
-        text: String,
-        direction: Direction = Direction.DOWN,
-        timeout: Int = 20000,
-        speed: Int = 40,
-        visibilityPercentage: Int = 100,
-        centerElement: Boolean = false,
-    ) {
-        require(text.isNotEmpty()) { "Text must not be empty." }
-        commands.add("- scrollUntilVisible:")
-        commands.add("    element:\n      text: \"$text\"")
+        if (env == null) {
+            scriptCommand.append(" \"$script\"")
+        } else {
+            scriptCommand.append("\n    script: \"$script\"")
+            if (env.isNotEmpty()) {
+                scriptCommand.append("\n    env:")
+                env.forEach { (key, value) ->
+                    scriptCommand.append("\n      $key: \"$value\"")
+                }
+            }
+        }
+
+        commands.add(scriptCommand.toString())
+    }
+
+    fun scroll(direction: Direction = Direction.DOWN) {
+        commands.add("- scroll:")
         commands.add("    direction: ${direction.displayName}")
-        commands.add("    timeout: $timeout")
-        commands.add("    speed: $speed")
-        commands.add("    visibilityPercentage: $visibilityPercentage")
-        commands.add("    centerElement: $centerElement")
     }
 
-    fun scrollUntilVisibleTag(
-        tag: String,
+    fun scrollUntilVisible(
+        text: String? = null,
+        id: String? = null,
         direction: Direction = Direction.DOWN,
         timeout: Int = 20000,
         speed: Int = 40,
         visibilityPercentage: Int = 100,
         centerElement: Boolean = false,
     ) {
-        require(tag.isNotEmpty()) { "Tag must not be empty." }
+        require(text != null || id != null) { "Either text or id must be provided." }
+
         commands.add("- scrollUntilVisible:")
-        commands.add("    element:\n      text: \"$tag\"")
+        commands.add("    element:")
+        text?.let { commands.add("      text: \"$it\"") }
+        id?.let { commands.add("      id: \"$it\"") }
         commands.add("    direction: ${direction.displayName}")
         commands.add("    timeout: $timeout")
         commands.add("    speed: $speed")
@@ -210,240 +325,146 @@ class KMaestro(
         commands.add("    longitude: $longitude")
     }
 
-    fun startRecording() = commands.add("- startRecording: recording")
+    fun startRecording(fileName: String = "recording") = commands.add("- startRecording: \"$fileName\"")
 
     fun stopRecording() = commands.add("- stopRecording")
 
-    fun stopApp(appId: String = "") {
-        if (appId.isEmpty()) commands.add("- stopApp") else commands.add("- stopApp: $appId")
+    fun stopApp(appId: String? = null) {
+        if (appId == null) {
+            commands.add("- stopApp")
+        } else {
+            commands.add("- stopApp: \"$appId\"")
+        }
     }
 
-    fun swipe(startWidth: String, startHeight: String, endWidth: String, endHeight: String, duration: Int = 400) {
+    fun swipe(
+        startX: String? = null,
+        startY: String? = null,
+        endX: String? = null,
+        endY: String? = null,
+        direction: Direction? = null,
+        from: Map<String, String>? = null,
+        duration: Int = 400
+    ) {
         commands.add("- swipe:")
-        commands.add("    start: $startWidth, $startHeight")
-        commands.add("    end: $endWidth, $endHeight")
+
+        if (direction != null) {
+            commands.add("    direction: ${direction.displayName}")
+        } else if (startX != null && startY != null && endX != null && endY != null) {
+            commands.add("    start: $startX, $startY")
+            commands.add("    end: $endX, $endY")
+        }
+
+        from?.let {
+            commands.add("    from:")
+            it.forEach { (key, value) ->
+                commands.add("      $key: \"$value\"")
+            }
+        }
+
         commands.add("    duration: $duration")
     }
 
-    fun swipe(direction: Direction, duration: Int = 400) {
-        commands.add("- swipe:")
-        commands.add("    direction: ${direction.displayName}")
-        commands.add("    duration: $duration")
-    }
-
-    fun swipe(fromTag: String, direction: Direction, duration: Int = 400) {
-        require(fromTag.isNotEmpty()) { "Tag must not be empty." }
-        commands.add("- swipe:")
-        commands.add("    from:\n      id: \"$fromTag\"")
-        commands.add("    direction: ${direction.displayName}")
-        commands.add("    duration: $duration")
-    }
-
-    fun swipe(startX: Int, startY: Int, endX: Int, endY: Int, duration: Int = 400) {
-        commands.add("- swipe:")
-        commands.add("    start: $startX, $startY")
-        commands.add("    end: $endX, $endY")
-        commands.add("    duration: $duration")
-    }
-
-    fun takeScreenshot(fileName: String = "screenshot") = commands.add("- takeScreenshot: $fileName")
+    fun takeScreenshot(fileName: String = "screenshot") = commands.add("- takeScreenshot: \"$fileName\"")
 
     fun toggleAirplaneMode() = commands.add("- toggleAirplaneMode")
 
-    fun clickText(
-        text: String,
+    fun tapOn(
+        text: String? = null,
+        id: String? = null,
+        point: String? = null,
+        index: Int? = null,
         repeat: Int = 1,
         delay: Int = 100,
         retryTapIfNoChange: Boolean = false,
         waitToSettleTimeoutMs: Int? = null,
+        longPressOn: Boolean = false
     ) {
-        commands.add("- tapOn: $text")
-        if (repeat > 1) {
-            commands.add("    repeat: $repeat")
-            commands.add("    delay: $delay")
+        val tapCommand = StringBuilder("- tapOn:")
+
+        when {
+            text != null && id == null && point == null -> tapCommand.append(" \"$text\"")
+            else -> {
+                tapCommand.append("\n")
+                text?.let { tapCommand.append("    text: \"$it\"\n") }
+                id?.let { tapCommand.append("    id: \"$it\"\n") }
+                point?.let { tapCommand.append("    point: $it\n") }
+                index?.let { tapCommand.append("    index: $it\n") }
+                if (repeat > 1) {
+                    tapCommand.append("    repeat: $repeat\n")
+                    tapCommand.append("    delay: $delay\n")
+                }
+                if (retryTapIfNoChange) tapCommand.append("    retryTapIfNoChange: true\n")
+                waitToSettleTimeoutMs?.let { tapCommand.append("    waitToSettleTimeoutMs: $it\n") }
+                if (longPressOn) tapCommand.append("    longPressOn: true\n")
+            }
         }
-        if (retryTapIfNoChange) commands.add("    retryTapIfNoChange: true")
-        waitToSettleTimeoutMs?.let { commands.add("    waitToSettleTimeoutMs: $it") }
+
+        commands.add(tapCommand.toString().trimEnd())
     }
 
-    fun clickTag(
-        tag: String,
+    fun doubleTapOn(
+        text: String? = null,
+        id: String? = null,
+        point: String? = null,
+        delay: Int = 100,
+        retryTapIfNoChange: Boolean = false,
+        waitToSettleTimeoutMs: Int? = null
+    ) {
+        val tapCommand = StringBuilder("- doubleTapOn:")
+
+        when {
+            text != null && id == null && point == null -> tapCommand.append(" \"$text\"")
+            else -> {
+                tapCommand.append("\n")
+                text?.let { tapCommand.append("    text: \"$it\"\n") }
+                id?.let { tapCommand.append("    id: \"$it\"\n") }
+                point?.let { tapCommand.append("    point: $it\n") }
+                tapCommand.append("    delay: $delay\n")
+                if (retryTapIfNoChange) tapCommand.append("    retryTapIfNoChange: true\n")
+                waitToSettleTimeoutMs?.let { tapCommand.append("    waitToSettleTimeoutMs: $it\n") }
+            }
+        }
+
+        commands.add(tapCommand.toString().trimEnd())
+    }
+
+    fun longPressOn(
+        text: String? = null,
+        id: String? = null,
+        point: String? = null,
         repeat: Int = 1,
         delay: Int = 100,
         retryTapIfNoChange: Boolean = false,
         waitToSettleTimeoutMs: Int? = null
     ) {
-        commands.add("- tapOn:\n    id: $tag")
-        if (repeat > 1) {
-            commands.add("    repeat: $repeat")
-            commands.add("    delay: $delay")
+        val tapCommand = StringBuilder("- longPressOn:")
+
+        when {
+            text != null && id == null && point == null -> tapCommand.append(" \"$text\"")
+            else -> {
+                tapCommand.append("\n")
+                text?.let { tapCommand.append("    text: \"$it\"\n") }
+                id?.let { tapCommand.append("    id: \"$it\"\n") }
+                point?.let { tapCommand.append("    point: $it\n") }
+                if (repeat > 1) {
+                    tapCommand.append("    repeat: $repeat\n")
+                    tapCommand.append("    delay: $delay\n")
+                }
+                if (retryTapIfNoChange) tapCommand.append("    retryTapIfNoChange: true\n")
+                waitToSettleTimeoutMs?.let { tapCommand.append("    waitToSettleTimeoutMs: $it\n") }
+            }
         }
-        if (retryTapIfNoChange) commands.add("    retryTapIfNoChange: true")
-        waitToSettleTimeoutMs?.let { commands.add("    waitToSettleTimeoutMs: $it") }
+
+        commands.add(tapCommand.toString().trimEnd())
     }
 
-    fun clickSpecificPoint(
-        percentageX: Int,
-        percentageY: Int,
-        repeat: Int = 1,
-        delay: Int = 100,
-        retryTapIfNoChange: Boolean = false,
-        waitToSettleTimeoutMs: Int? = null
-    ) {
-        require(percentageX >= 0 && percentageY >= 0) { "Percentage coordinates must be non-negative." }
-        commands.add("- tapOn:\n    point: $percentageX, $percentageY")
-        if (repeat > 1) {
-            commands.add("    repeat: $repeat")
-            commands.add("    delay: $delay")
-        }
-        if (retryTapIfNoChange) commands.add("    retryTapIfNoChange: true")
-        waitToSettleTimeoutMs?.let { commands.add("    waitToSettleTimeoutMs: $it") }
-    }
-
-    fun clickCoordinate(
-        x: Int,
-        y: Int,
-        repeat: Int = 1,
-        delay: Int = 100,
-        retryTapIfNoChange: Boolean = false,
-        waitToSettleTimeoutMs: Int? = null
-    ) {
-        require(x >= 0 && y >= 0) { "Coordinates must be non-negative." }
-        commands.add("- tapOn:\n    point: $x, $y")
-        if (repeat > 1) {
-            commands.add("    repeat: $repeat")
-            commands.add("    delay: $delay")
-        }
-        if (retryTapIfNoChange) commands.add("    retryTapIfNoChange: true")
-        waitToSettleTimeoutMs?.let { commands.add("    waitToSettleTimeoutMs: $it") }
-    }
-
-    fun doubleClickText(
-        text: String,
-        delay: Int = 100,
-        retryTapIfNoChange: Boolean = false,
-        waitToSettleTimeoutMs: Int? = null,
-    ) {
-        commands.add("- doubleTapOn: $text")
-        commands.add("    delay: $delay")
-        if (retryTapIfNoChange) commands.add("    retryTapIfNoChange: true")
-        waitToSettleTimeoutMs?.let { commands.add("    waitToSettleTimeoutMs: $it") }
-    }
-
-    fun doubleClickTag(
-        tag: String,
-        delay: Int = 100,
-        retryTapIfNoChange: Boolean = false,
-        waitToSettleTimeoutMs: Int? = null
-    ) {
-        commands.add("- doubleTapOn:\n    id: $tag")
-        commands.add("    delay: $delay")
-        if (retryTapIfNoChange) commands.add("    retryTapIfNoChange: true")
-        waitToSettleTimeoutMs?.let { commands.add("    waitToSettleTimeoutMs: $it") }
-    }
-
-    fun doubleClickSpecificPoint(
-        percentageX: Int,
-        percentageY: Int,
-        delay: Int = 100,
-        retryTapIfNoChange: Boolean = false,
-        waitToSettleTimeoutMs: Int? = null
-    ) {
-        require(percentageX >= 0 && percentageY >= 0) { "Percentage coordinates must be non-negative." }
-        commands.add("- doubleTapOn:\n    point: $percentageX, $percentageY")
-        commands.add("    delay: $delay")
-        if (retryTapIfNoChange) commands.add("    retryTapIfNoChange: true")
-        waitToSettleTimeoutMs?.let { commands.add("    waitToSettleTimeoutMs: $it") }
-    }
-
-    fun doubleClickCoordinate(
-        x: Int,
-        y: Int,
-        delay: Int = 100,
-        retryTapIfNoChange: Boolean = false,
-        waitToSettleTimeoutMs: Int? = null
-    ) {
-        require(x >= 0 && y >= 0) { "Coordinates must be non-negative." }
-        commands.add("- doubleTapOn:\n    point: $x, $y")
-        commands.add("    delay: $delay")
-        if (retryTapIfNoChange) commands.add("    retryTapIfNoChange: true")
-        waitToSettleTimeoutMs?.let { commands.add("    waitToSettleTimeoutMs: $it") }
-    }
-
-    fun longClickText(
-        text: String,
-        repeat: Int = 1,
-        delay: Int = 100,
-        retryTapIfNoChange: Boolean = false,
-        waitToSettleTimeoutMs: Int? = null,
-    ) {
-        commands.add("- longPressOn: $text")
-        if (repeat > 1) {
-            commands.add("    repeat: $repeat")
-            commands.add("    delay: $delay")
-        }
-        if (retryTapIfNoChange) commands.add("    retryTapIfNoChange: true")
-        waitToSettleTimeoutMs?.let { commands.add("    waitToSettleTimeoutMs: $it") }
-    }
-
-    fun longClickTag(
-        tag: String,
-        repeat: Int = 1,
-        delay: Int = 100,
-        retryTapIfNoChange: Boolean = false,
-        waitToSettleTimeoutMs: Int? = null
-    ) {
-        commands.add("- longPressOn:\n    id: $tag")
-        if (repeat > 1) {
-            commands.add("    repeat: $repeat")
-            commands.add("    delay: $delay")
-        }
-        if (retryTapIfNoChange) commands.add("    retryTapIfNoChange: true")
-        waitToSettleTimeoutMs?.let { commands.add("    waitToSettleTimeoutMs: $it") }
-    }
-
-    fun longClickSpecificPoint(
-        percentageX: Int,
-        percentageY: Int,
-        repeat: Int = 1,
-        delay: Int = 100,
-        retryTapIfNoChange: Boolean = false,
-        waitToSettleTimeoutMs: Int? = null
-    ) {
-        require(percentageX >= 0 && percentageY >= 0) { "Percentage coordinates must be non-negative." }
-        commands.add("- longPressOn:\n    point: $percentageX, $percentageY")
-        if (repeat > 1) {
-            commands.add("    repeat: $repeat")
-            commands.add("    delay: $delay")
-        }
-        if (retryTapIfNoChange) commands.add("    retryTapIfNoChange: true")
-        waitToSettleTimeoutMs?.let { commands.add("    waitToSettleTimeoutMs: $it") }
-    }
-
-    fun longClickCoordinate(
-        x: Int,
-        y: Int,
-        repeat: Int = 1,
-        delay: Int = 100,
-        retryTapIfNoChange: Boolean = false,
-        waitToSettleTimeoutMs: Int? = null
-    ) {
-        require(x >= 0 && y >= 0) { "Coordinates must be non-negative." }
-        commands.add("- longPressOn:\n    point: $x, $y")
-        if (repeat > 1) {
-            commands.add("    repeat: $repeat")
-            commands.add("    delay: $delay")
-        }
-        if (retryTapIfNoChange) commands.add("    retryTapIfNoChange: true")
-        waitToSettleTimeoutMs?.let { commands.add("    waitToSettleTimeoutMs: $it") }
-    }
-
-    fun travel(points: Map<Double, Double>, speed: Int = 7900) {
+    fun travel(points: List<Pair<Double, Double>>, speed: Int = 7900) {
         require(points.isNotEmpty()) { "Points must not be empty." }
         commands.add("- travel:")
         commands.add("    points:")
         points.forEach { (latitude, longitude) ->
-            commands.add("    - $latitude,$longitude")
+            commands.add("      - $latitude,$longitude")
         }
         commands.add("    speed: $speed")
     }
