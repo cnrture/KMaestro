@@ -15,11 +15,11 @@ class KMaestro(
         commands.add("- appId: $appId\n---")
     }
 
+    fun launchApp() = commands.add("- launchApp")
     fun addMedia(vararg path: String) {
         commands.add("- addMedia:")
         path.forEach { commands.add("    - \"$it\"") }
     }
-    fun launchApp() = commands.add("- launchApp")
     fun clickText(text: String) = commands.add("- tapOn: \"$text\"")
     fun clickId(id: String) = commands.add("- tapOn:\n    id: \"$id\"")
 
