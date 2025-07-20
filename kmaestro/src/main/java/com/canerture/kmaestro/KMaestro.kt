@@ -246,6 +246,10 @@ class KMaestro(
         commands.add("    duration: $duration")
     }
 
+    fun takeScreenshot(fileName: String = "screenshot") = commands.add("- takeScreenshot: $fileName")
+
+    fun toggleAirplaneMode() = commands.add("- toggleAirplaneMode")
+
     fun clickText(text: String) = commands.add("- tapOn: \"$text\"")
 
     fun clickTag(tag: String) = commands.add("- tapOn:\n    id: \"$tag\"")
