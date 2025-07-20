@@ -218,6 +218,34 @@ class KMaestro(
         if (appId.isEmpty()) commands.add("- stopApp") else commands.add("- stopApp: $appId")
     }
 
+    fun swipe(startWidth: String, startHeight: String, endWidth: String, endHeight: String, duration: Int = 400) {
+        commands.add("- swipe:")
+        commands.add("    start: $startWidth, $startHeight")
+        commands.add("    end: $endWidth, $endHeight")
+        commands.add("    duration: $duration")
+    }
+
+    fun swipe(direction: Direction, duration: Int = 400) {
+        commands.add("- swipe:")
+        commands.add("    direction: ${direction.displayName}")
+        commands.add("    duration: $duration")
+    }
+
+    fun swipe(fromTag: String, direction: Direction, duration: Int = 400) {
+        require(fromTag.isNotEmpty()) { "Tag must not be empty." }
+        commands.add("- swipe:")
+        commands.add("    from:\n      id: \"$fromTag\"")
+        commands.add("    direction: ${direction.displayName}")
+        commands.add("    duration: $duration")
+    }
+
+    fun swipe(startX: Int, startY: Int, endX: Int, endY: Int, duration: Int = 400) {
+        commands.add("- swipe:")
+        commands.add("    start: $startX, $startY")
+        commands.add("    end: $endX, $endY")
+        commands.add("    duration: $duration")
+    }
+
     fun clickText(text: String) = commands.add("- tapOn: \"$text\"")
 
     fun clickTag(tag: String) = commands.add("- tapOn:\n    id: \"$tag\"")
