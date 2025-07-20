@@ -16,12 +16,49 @@ class KMaestro(
     }
 
     fun launchApp() = commands.add("- launchApp")
+
     fun addMedia(vararg path: String) {
         commands.add("- addMedia:")
         path.forEach { commands.add("    - \"$it\"") }
     }
+
+    fun isVisibleText(
+        text: String,
+        enabled: Boolean? = null,
+        checked: Boolean? = null,
+        focuses: Boolean? = null,
+        selected: Boolean? = null,
+    ) {
+        require(text.isNotEmpty()) { "Text must not be empty." }
+        val visibilityCommand = StringBuilder("- assertVisible:\n")
+        if (text.isNotEmpty()) visibilityCommand.append("    text: \"$text\"\n")
+        enabled?.let { visibilityCommand.append("    enabled: $it\n") }
+        checked?.let { visibilityCommand.append("    checked: $it\n") }
+        focuses?.let { visibilityCommand.append("    focused: $it\n") }
+        selected?.let { visibilityCommand.append("    selected: $it\n") }
+        commands.add(visibilityCommand.toString())
+    }
+
+    fun isVisibleTag(
+        tag: String = "",
+        enabled: Boolean? = null,
+        checked: Boolean? = null,
+        focuses: Boolean? = null,
+        selected: Boolean? = null,
+    ) {
+        require(tag.isNotEmpty()) { "Tag must not be empty." }
+        val visibilityCommand = StringBuilder("- assertVisible:\n")
+        if (tag.isNotEmpty()) visibilityCommand.append("    id: \"$tag\"\n")
+        enabled?.let { visibilityCommand.append("    enabled: $it\n") }
+        checked?.let { visibilityCommand.append("    checked: $it\n") }
+        focuses?.let { visibilityCommand.append("    focused: $it\n") }
+        selected?.let { visibilityCommand.append("    selected: $it\n") }
+        commands.add(visibilityCommand.toString())
+    }
+
     fun clickText(text: String) = commands.add("- tapOn: \"$text\"")
-    fun clickId(id: String) = commands.add("- tapOn:\n    id: \"$id\"")
+
+    fun clickTag(tag: String) = commands.add("- tapOn:\n    id: \"$tag\"")
 
     fun build(): String {
         val yaml = commands.joinToString("\n")
