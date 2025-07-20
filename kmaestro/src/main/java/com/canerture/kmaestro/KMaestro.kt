@@ -164,6 +164,8 @@ class KMaestro(
         commands.add("- runFlow: $flowName")
     }
 
+    fun scroll() = commands.add("- scroll")
+
     fun clickText(text: String) = commands.add("- tapOn: \"$text\"")
 
     fun clickTag(tag: String) = commands.add("- tapOn:\n    id: \"$tag\"")
