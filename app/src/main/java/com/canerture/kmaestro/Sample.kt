@@ -2,11 +2,10 @@ package com.canerture.kmaestro
 
 fun main() {
     KMaestro(
-        appId = "com.canerture.kmaestro",
         path = "maestro",
         yamlName = "sample.yaml"
     ).apply {
-        launchApp()
+        launchApp("com.canerture.kmaestro")
         build()
     }
 }
