@@ -210,6 +210,10 @@ class KMaestro(
         commands.add("    longitude: $longitude")
     }
 
+    fun startRecording() = commands.add("- startRecording: recording")
+
+    fun stopRecording() = commands.add("- stopRecording")
+
     fun clickText(text: String) = commands.add("- tapOn: \"$text\"")
 
     fun clickTag(tag: String) = commands.add("- tapOn:\n    id: \"$tag\"")
