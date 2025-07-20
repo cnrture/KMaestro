@@ -282,6 +282,24 @@ class KMaestro(
         waitToSettleTimeoutMs?.let { commands.add("    waitToSettleTimeoutMs: $it") }
     }
 
+    fun clickSpecificPoint(
+        percentageX: Int,
+        percentageY: Int,
+        repeat: Int = 1,
+        delay: Int = 100,
+        retryTapIfNoChange: Boolean = false,
+        waitToSettleTimeoutMs: Int? = null
+    ) {
+        require(percentageX >= 0 && percentageY >= 0) { "Percentage coordinates must be non-negative." }
+        commands.add("- tapOn:\n    point: $percentageX, $percentageY")
+        if (repeat > 1) {
+            commands.add("    repeat: $repeat")
+            commands.add("    delay: $delay")
+        }
+        if (retryTapIfNoChange) commands.add("    retryTapIfNoChange: true")
+        waitToSettleTimeoutMs?.let { commands.add("    waitToSettleTimeoutMs: $it") }
+    }
+
     fun clickCoordinate(
         x: Int,
         y: Int,
