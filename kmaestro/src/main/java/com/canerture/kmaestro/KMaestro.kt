@@ -318,6 +318,74 @@ class KMaestro(
         waitToSettleTimeoutMs?.let { commands.add("    waitToSettleTimeoutMs: $it") }
     }
 
+    fun longClickText(
+        text: String,
+        repeat: Int = 1,
+        delay: Int = 100,
+        retryTapIfNoChange: Boolean = false,
+        waitToSettleTimeoutMs: Int? = null,
+    ) {
+        commands.add("- longPressOn: $text")
+        if (repeat > 1) {
+            commands.add("    repeat: $repeat")
+            commands.add("    delay: $delay")
+        }
+        if (retryTapIfNoChange) commands.add("    retryTapIfNoChange: true")
+        waitToSettleTimeoutMs?.let { commands.add("    waitToSettleTimeoutMs: $it") }
+    }
+
+    fun longClickTag(
+        tag: String,
+        repeat: Int = 1,
+        delay: Int = 100,
+        retryTapIfNoChange: Boolean = false,
+        waitToSettleTimeoutMs: Int? = null
+    ) {
+        commands.add("- longPressOn:\n    id: $tag")
+        if (repeat > 1) {
+            commands.add("    repeat: $repeat")
+            commands.add("    delay: $delay")
+        }
+        if (retryTapIfNoChange) commands.add("    retryTapIfNoChange: true")
+        waitToSettleTimeoutMs?.let { commands.add("    waitToSettleTimeoutMs: $it") }
+    }
+
+    fun longClickSpecificPoint(
+        percentageX: Int,
+        percentageY: Int,
+        repeat: Int = 1,
+        delay: Int = 100,
+        retryTapIfNoChange: Boolean = false,
+        waitToSettleTimeoutMs: Int? = null
+    ) {
+        require(percentageX >= 0 && percentageY >= 0) { "Percentage coordinates must be non-negative." }
+        commands.add("- longPressOn:\n    point: $percentageX, $percentageY")
+        if (repeat > 1) {
+            commands.add("    repeat: $repeat")
+            commands.add("    delay: $delay")
+        }
+        if (retryTapIfNoChange) commands.add("    retryTapIfNoChange: true")
+        waitToSettleTimeoutMs?.let { commands.add("    waitToSettleTimeoutMs: $it") }
+    }
+
+    fun longClickCoordinate(
+        x: Int,
+        y: Int,
+        repeat: Int = 1,
+        delay: Int = 100,
+        retryTapIfNoChange: Boolean = false,
+        waitToSettleTimeoutMs: Int? = null
+    ) {
+        require(x >= 0 && y >= 0) { "Coordinates must be non-negative." }
+        commands.add("- longPressOn:\n    point: $x, $y")
+        if (repeat > 1) {
+            commands.add("    repeat: $repeat")
+            commands.add("    delay: $delay")
+        }
+        if (retryTapIfNoChange) commands.add("    retryTapIfNoChange: true")
+        waitToSettleTimeoutMs?.let { commands.add("    waitToSettleTimeoutMs: $it") }
+    }
+
     fun build(): String {
         val yaml = commands.joinToString("\n")
         val directory = File(path)
