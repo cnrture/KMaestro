@@ -121,6 +121,8 @@ class KMaestro(
 
     fun setRandomText(length: Int = 8) = commands.add("- inputRandomText:\n    length: $length")
 
+    fun killApp() = commands.add("- killApp")
+
     fun clickText(text: String) = commands.add("- tapOn: \"$text\"")
 
     fun clickTag(tag: String) = commands.add("- tapOn:\n    id: \"$tag\"")
