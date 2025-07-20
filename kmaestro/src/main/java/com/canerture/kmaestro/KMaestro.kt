@@ -7,7 +7,7 @@ class KMaestro(
     private val yamlName: String,
 ) {
 
-    private val commands = mutableListOf<String>()
+    private var commands = mutableListOf<String>()
 
     init {
         commands.add("# $yamlName\n")
@@ -150,6 +150,14 @@ class KMaestro(
     }
 
     fun pressKey(key: KeyType) = commands.add("- pressKey: ${key.displayName}")
+
+    fun repeat(
+        times: Int = 1,
+        commands: (KMaestro) -> Unit,
+    ) {
+        this.commands.add("- repeat:\n    times: $times")
+        commands.invoke(this)
+    }
 
     fun clickText(text: String) = commands.add("- tapOn: \"$text\"")
 
