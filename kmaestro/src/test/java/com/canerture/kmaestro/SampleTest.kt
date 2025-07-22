@@ -176,13 +176,13 @@ class SampleTest {
 
         val result = kMaestro.apply {
             scroll()
-            scroll(direction = KMaestro.Direction.UP)
-            scroll(direction = KMaestro.Direction.LEFT)
+            scroll(direction = Direction.UP)
+            scroll(direction = Direction.LEFT)
 
             scrollUntilVisible(text = "Sign Up")
             scrollUntilVisible(
                 id = "footer_element",
-                direction = KMaestro.Direction.DOWN,
+                direction = Direction.DOWN,
                 timeout = 30000,
                 speed = 60,
                 visibilityPercentage = 80,
@@ -200,7 +200,7 @@ class SampleTest {
 
         val result = kMaestro.apply {
             // Direction-based swipe
-            swipe(direction = KMaestro.Direction.LEFT, duration = 500)
+            swipe(direction = Direction.LEFT, duration = 500)
 
             // Coordinate-based swipe
             swipe(
@@ -214,7 +214,7 @@ class SampleTest {
             // Swipe from element
             swipe(
                 from = mapOf("id" to "carousel_item"),
-                direction = KMaestro.Direction.RIGHT,
+                direction = Direction.RIGHT,
                 duration = 600
             )
         }.build()
@@ -326,14 +326,14 @@ class SampleTest {
         val kMaestro = KMaestro(path = "maestro", yamlName = "keypress_test")
 
         val result = kMaestro.apply {
-            pressKey(KMaestro.KeyType.ENTER)
-            pressKey(KMaestro.KeyType.BACK)
-            pressKey(KMaestro.KeyType.HOME)
-            pressKey(KMaestro.KeyType.VOLUME_UP)
-            pressKey(KMaestro.KeyType.VOLUME_DOWN)
-            pressKey(KMaestro.KeyType.POWER)
-            pressKey(KMaestro.KeyType.TAB)
-            pressKey(KMaestro.KeyType.BACKSPACE)
+            pressKey(KeyType.ENTER)
+            pressKey(KeyType.BACK)
+            pressKey(KeyType.HOME)
+            pressKey(KeyType.VOLUME_UP)
+            pressKey(KeyType.VOLUME_DOWN)
+            pressKey(KeyType.POWER)
+            pressKey(KeyType.TAB)
+            pressKey(KeyType.BACKSPACE)
         }.build()
 
         println("=== Key Press Commands ===")
@@ -410,14 +410,14 @@ class SampleTest {
             )
 
             // Navigate and interact
-            scrollUntilVisible(text = "Profile", direction = KMaestro.Direction.DOWN)
+            scrollUntilVisible(text = "Profile", direction = Direction.DOWN)
             tapOn(text = "Profile")
 
             // Take screenshot for verification
             takeScreenshot("profile_page")
 
             // Test swipe gesture
-            swipe(direction = KMaestro.Direction.LEFT)
+            swipe(direction = Direction.LEFT)
 
             // Logout
             tapOn(id = "menu_button")
