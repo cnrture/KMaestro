@@ -20,5 +20,5 @@ dependencyResolutionManagement {
 }
 
 rootProject.name = "KMaestro"
-include(":app")
+include(":sample")
 include(":kmaestro")
