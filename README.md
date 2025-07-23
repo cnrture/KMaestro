@@ -1,7 +1,7 @@
 # 🎭 KMaestro
 
 [![Kotlin](https://img.shields.io/badge/kotlin-2.2.0-blue.svg)](https://kotlinlang.org)
-[![License](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![License](https://img.shields.io/badge/License-APACHE-yellow.svg)](https://opensource.org/licenses/APACHE)
 
 **KMaestro** is a type-safe, fluent Kotlin DSL for creating [Maestro](https://maestro.mobile.dev)
 mobile testing flows. Write beautiful, maintainable test automation code with full IDE support and
@@ -26,7 +26,7 @@ Add KMaestro to your project:
 
 ```kotlin
 dependencies {
-    testImplementation("com.canerture:kmaestro:1.0.0")
+    testImplementation("com.canerture:kmaestro:0.0.1")
 }
 ```
 
