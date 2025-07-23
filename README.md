@@ -36,10 +36,10 @@ dependencies {
 import com.canerture.kmaestro.KMaestro
 
 fun createLoginTest() {
-    val loginFlow = KMaestro(
+    KMaestro(
         path = "maestro",
         yamlName = "login_test"
-    ).apply {
+    ) {
         // Launch the app
         launchApp(
             appId = "com.example.app",
@@ -58,7 +58,7 @@ fun createLoginTest() {
         // Verify successful login
         assertVisible(text = "Welcome")
         takeScreenshot("login_success")
-    }.build()
+    }
     
     println("Generated YAML saved to: maestro/login_test.yaml")
 }
