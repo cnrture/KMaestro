@@ -461,9 +461,6 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 ## 🔗 Links
 
 - [Maestro Documentation](https://maestro.mobile.dev)
-- [API Reference](https://your-docs-site.com/api)
-- [Examples Repository](https://github.com/your-org/kmaestro-examples)
-- [Issue Tracker](https://github.com/your-org/kmaestro/issues)
 
 ## ⭐ Acknowledgments
 
