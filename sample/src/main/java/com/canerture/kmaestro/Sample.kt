@@ -20,9 +20,7 @@ fun main() {
 }
 
 fun testLaunchAppCommands() {
-    val kMaestro = KMaestro(path = "maestro", yamlName = "launch_test")
-
-    val result = kMaestro.apply {
+    KMaestro(path = "maestro", yamlName = "launch_test") {
         // Basic launch
         launchApp()
 
@@ -46,16 +44,11 @@ fun testLaunchAppCommands() {
                 "retries" to 5
             )
         )
-    }.build()
-
-    println("=== Launch App Commands ===")
-    println(result)
+    }
 }
 
 fun testAssertionCommands() {
-    val kMaestro = KMaestro(path = "maestro", yamlName = "assertion_test")
-
-    val result = kMaestro.apply {
+    KMaestro(path = "maestro", yamlName = "assertion_test") {
         // Basic assertions
         assertVisible(text = "Welcome")
         assertVisible(id = "login_button")
@@ -78,31 +71,21 @@ fun testAssertionCommands() {
         assertTrue("2 + 2 == 4")
         assertWithAI("The login form is displayed correctly")
         assertNoDefectsWithAI()
-    }.build()
-
-    println("=== Assertion Commands ===")
-    println(result)
+    }
 }
 
 fun testNavigationCommands() {
-    val kMaestro = KMaestro(path = "maestro", yamlName = "navigation_test")
-
-    val result = kMaestro.apply {
+    KMaestro(path = "maestro", yamlName = "navigation_test") {
         back()
         killApp()
         killApp(appId = "com.example.app")
         stopApp()
         stopApp(appId = "com.example.app")
-    }.build()
-
-    println("=== Navigation Commands ===")
-    println(result)
+    }
 }
 
 fun testStateManagementCommands() {
-    val kMaestro = KMaestro(path = "maestro", yamlName = "state_test")
-
-    val result = kMaestro.apply {
+    KMaestro(path = "maestro", yamlName = "state_test") {
         clearState()
         clearState(appId = "com.example.app")
         clearKeychain()
@@ -112,16 +95,11 @@ fun testStateManagementCommands() {
         toggleAirplaneMode()
 
         setLocation(latitude = 40.7128, longitude = -74.0060) // New York
-    }.build()
-
-    println("=== State Management Commands ===")
-    println(result)
+    }
 }
 
 fun testInputCommands() {
-    val kMaestro = KMaestro(path = "maestro", yamlName = "input_test")
-
-    val result = kMaestro.apply {
+    KMaestro(path = "maestro", yamlName = "input_test") {
         inputText("Hello World")
         inputRandomEmail()
         inputRandomPersonName()
@@ -136,16 +114,11 @@ fun testInputCommands() {
         copyTextFrom(text = "Copy this")
         copyTextFrom(id = "username_field")
         pasteText()
-    }.build()
-
-    println("=== Input Commands ===")
-    println(result)
+    }
 }
 
 fun testTapCommands() {
-    val kMaestro = KMaestro(path = "maestro", yamlName = "tap_test")
-
-    val result = kMaestro.apply {
+    KMaestro(path = "maestro", yamlName = "tap_test") {
         // Basic taps
         tapOn(text = "Login")
         tapOn(id = "submit_button")
@@ -173,16 +146,11 @@ fun testTapCommands() {
             repeat = 2,
             delay = 300
         )
-    }.build()
-
-    println("=== Tap Commands ===")
-    println(result)
+    }
 }
 
 fun testScrollCommands() {
-    val kMaestro = KMaestro(path = "maestro", yamlName = "scroll_test")
-
-    val result = kMaestro.apply {
+    KMaestro(path = "maestro", yamlName = "scroll_test") {
         scroll()
         scroll(direction = Direction.UP)
         scroll(direction = Direction.LEFT)
@@ -196,16 +164,11 @@ fun testScrollCommands() {
             visibilityPercentage = 80,
             centerElement = true
         )
-    }.build()
-
-    println("=== Scroll Commands ===")
-    println(result)
+    }
 }
 
 fun testSwipeCommands() {
-    val kMaestro = KMaestro(path = "maestro", yamlName = "swipe_test")
-
-    val result = kMaestro.apply {
+    KMaestro(path = "maestro", yamlName = "swipe_test") {
         // Direction-based swipe
         swipe(direction = Direction.LEFT, duration = 500)
 
@@ -224,16 +187,11 @@ fun testSwipeCommands() {
             direction = Direction.RIGHT,
             duration = 600
         )
-    }.build()
-
-    println("=== Swipe Commands ===")
-    println(result)
+    }
 }
 
 fun testWaitCommands() {
-    val kMaestro = KMaestro(path = "maestro", yamlName = "wait_test")
-
-    val result = kMaestro.apply {
+    KMaestro(path = "maestro", yamlName = "wait_test") {
         waitForAnimationToEnd()
         waitForAnimationToEnd(timeout = 8000)
 
@@ -251,16 +209,11 @@ fun testWaitCommands() {
             ),
             timeout = 20000
         )
-    }.build()
-
-    println("=== Wait Commands ===")
-    println(result)
+    }
 }
 
 fun testMediaCommands() {
-    val kMaestro = KMaestro(path = "maestro", yamlName = "media_test")
-
-    val result = kMaestro.apply {
+    KMaestro(path = "maestro", yamlName = "media_test") {
         addMedia("/path/to/image1.jpg", "/path/to/video.mp4")
 
         takeScreenshot()
@@ -269,16 +222,11 @@ fun testMediaCommands() {
         startRecording()
         startRecording("test_session")
         stopRecording()
-    }.build()
-
-    println("=== Media Commands ===")
-    println(result)
+    }
 }
 
 fun testScriptCommands() {
-    val kMaestro = KMaestro(path = "maestro", yamlName = "script_test")
-
-    val result = kMaestro.apply {
+    KMaestro(path = "maestro", yamlName = "script_test") {
         evalScript("Math.random()")
 
         runScript("console.log('Hello')")
@@ -291,16 +239,11 @@ fun testScriptCommands() {
         )
 
         extractTextWithAI("Extract the username from the profile page")
-    }.build()
-
-    println("=== Script Commands ===")
-    println(result)
+    }
 }
 
 fun testFlowControlCommands() {
-    val kMaestro = KMaestro(path = "maestro", yamlName = "flow_test")
-
-    val result = kMaestro.apply {
+    KMaestro(path = "maestro", yamlName = "flow_test") {
         runFlow("login_flow")
 
         repeat(
@@ -318,16 +261,11 @@ fun testFlowControlCommands() {
                 "- assertVisible: \"Success\""
             )
         )
-    }.build()
-
-    println("=== Flow Control Commands ===")
-    println(result)
+    }
 }
 
 fun testKeyPressCommands() {
-    val kMaestro = KMaestro(path = "maestro", yamlName = "keypress_test")
-
-    val result = kMaestro.apply {
+    KMaestro(path = "maestro", yamlName = "keypress_test") {
         pressKey(KeyType.ENTER)
         pressKey(KeyType.BACK)
         pressKey(KeyType.HOME)
@@ -336,32 +274,22 @@ fun testKeyPressCommands() {
         pressKey(KeyType.POWER)
         pressKey(KeyType.TAB)
         pressKey(KeyType.BACKSPACE)
-    }.build()
-
-    println("=== Key Press Commands ===")
-    println(result)
+    }
 }
 
 fun testLinkCommands() {
-    val kMaestro = KMaestro(path = "maestro", yamlName = "link_test")
-
-    val result = kMaestro.apply {
+    KMaestro(path = "maestro", yamlName = "link_test") {
         openLink("https://example.com")
         openLink(
             url = "https://test.com",
             autoVerify = true,
             browser = true
         )
-    }.build()
-
-    println("=== Link Commands ===")
-    println(result)
+    }
 }
 
 fun testTravelCommand() {
-    val kMaestro = KMaestro(path = "maestro", yamlName = "travel_test")
-
-    val result = kMaestro.apply {
+    KMaestro(path = "maestro", yamlName = "travel_test") {
         travel(
             points = listOf(
                 40.7128 to -74.0060, // New York
@@ -370,16 +298,11 @@ fun testTravelCommand() {
             ),
             speed = 5000
         )
-    }.build()
-
-    println("=== Travel Command ===")
-    println(result)
+    }
 }
 
 fun testComplexScenario() {
-    val kMaestro = KMaestro(path = "maestro", yamlName = "complex_scenario")
-
-    val result = kMaestro.apply {
+    KMaestro(path = "maestro", yamlName = "complex_scenario") {
         // Launch app
         launchApp(
             appId = "com.example.testapp",
@@ -426,8 +349,5 @@ fun testComplexScenario() {
 
         // Verify logout
         assertVisible(text = "Welcome")
-    }.build()
-
-    println("=== Complex Scenario ===")
-    println(result)
+    }
 }

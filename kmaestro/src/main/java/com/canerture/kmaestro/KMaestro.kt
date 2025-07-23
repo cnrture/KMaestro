@@ -17,12 +17,15 @@ import java.io.File
 class KMaestro(
     private val path: String,
     private val yamlName: String,
+    config: (KMaestro.() -> Unit)? = null
 ) {
 
     private var commands = mutableListOf<String>()
 
     init {
         commands.add("# $yamlName\n")
+        config?.invoke(this)
+        build()
     }
 
     /**
@@ -495,7 +498,8 @@ class KMaestro(
      * inputRandomNumber(10) // Generates 10-digit number
      * ```
      */
-    fun inputRandomNumber(length: Int = 8) = commands.add("- inputRandomNumber:\n    length: $length")
+    fun inputRandomNumber(length: Int = 8) =
+        commands.add("- inputRandomNumber:\n    length: $length")
 
     /**
      * Inputs randomly generated text with specified length.
@@ -771,7 +775,8 @@ class KMaestro(
      * stopRecording()
      * ```
      */
-    fun startRecording(fileName: String = "recording") = commands.add("- startRecording: \"$fileName\"")
+    fun startRecording(fileName: String = "recording") =
+        commands.add("- startRecording: \"$fileName\"")
 
     /**
      * Stops the current recording session.
@@ -861,7 +866,8 @@ class KMaestro(
      * takeScreenshot("login_screen") // Custom name
      * ```
      */
-    fun takeScreenshot(fileName: String = "screenshot") = commands.add("- takeScreenshot: \"$fileName\"")
+    fun takeScreenshot(fileName: String = "screenshot") =
+        commands.add("- takeScreenshot: \"$fileName\"")
 
     /**
      * Toggles airplane mode (enables if disabled, disables if enabled).
@@ -1059,7 +1065,8 @@ class KMaestro(
      * assertVisible(text = "Animation Complete")
      * ```
      */
-    fun waitForAnimationToEnd(timeout: Int = 5000) = commands.add("- waitForAnimationToEnd:\n    timeout: $timeout")
+    fun waitForAnimationToEnd(timeout: Int = 5000) =
+        commands.add("- waitForAnimationToEnd:\n    timeout: $timeout")
 
     /**
      * Builds the final YAML content and saves it to a file.
