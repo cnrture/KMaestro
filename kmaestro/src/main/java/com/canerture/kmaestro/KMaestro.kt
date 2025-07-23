@@ -1082,7 +1082,7 @@ class KMaestro(
      * }.build()
      * ```
      */
-    fun build(): String {
+    internal fun build(): String {
         val yaml = commands.joinToString("\n")
         val directory = File(path)
         if (!directory.exists()) directory.mkdirs()
