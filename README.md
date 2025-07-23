@@ -1,8 +1,7 @@
 # 🎭 KMaestro
 
-[![Kotlin](https://img.shields.io/badge/kotlin-1.9.10-blue.svg)](https://kotlinlang.org)
+[![Kotlin](https://img.shields.io/badge/kotlin-2.2.0-blue.svg)](https://kotlinlang.org)
 [![License](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
-[![API](https://img.shields.io/badge/API-26%2B-brightgreen.svg?style=flat)](https://android-arsenal.com/api?level=26)
 
 **KMaestro** is a type-safe, fluent Kotlin DSL for creating [Maestro](https://maestro.mobile.dev)
 mobile testing flows. Write beautiful, maintainable test automation code with full IDE support and
