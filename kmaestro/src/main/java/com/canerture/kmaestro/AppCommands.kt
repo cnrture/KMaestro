@@ -2,6 +2,17 @@ package com.canerture.kmaestro
 
 internal class AppCommands(private val commands: MutableList<String>) {
 
+    /**
+     * Launches an app with optional configuration parameters.
+     * This is typically the first command in a Maestro flow.
+     *
+     * @param appId The bundle ID (iOS) or package name (Android) of the app to launch. If null, launches the default app
+     * @param clearState Whether to clear the app's state before launching (default: false)
+     * @param clearKeychain Whether to clear the iOS keychain before launching (default: false)
+     * @param stopApp Whether to stop the app before launching it (default: true)
+     * @param permissions Map of permissions to set for the app (e.g., "notifications" to "deny")
+     * @param arguments Launch arguments to pass to the app as key-value pairs
+     */
     fun launchApp(
         appId: String? = null,
         clearState: Boolean = false,
@@ -44,6 +55,12 @@ internal class AppCommands(private val commands: MutableList<String>) {
         commands.add(launchCommand.toString())
     }
 
+    /**
+     * Terminates/kills an app completely.
+     * This forcefully stops the app and removes it from memory.
+     *
+     * @param appId The app ID to kill. If null, kills the current app
+     */
     fun killApp(appId: String? = null) {
         if (appId == null) {
             commands.add("- killApp")
@@ -52,6 +69,12 @@ internal class AppCommands(private val commands: MutableList<String>) {
         }
     }
 
+    /**
+     * Stops/closes an app (but doesn't kill it completely).
+     * The app remains in memory and can be resumed.
+     *
+     * @param appId The app ID to stop. If null, stops the current app
+     */
     fun stopApp(appId: String? = null) {
         if (appId == null) {
             commands.add("- stopApp")
@@ -60,6 +83,12 @@ internal class AppCommands(private val commands: MutableList<String>) {
         }
     }
 
+    /**
+     * Clears the app's state, including preferences, databases, and cached data.
+     * This resets the app to its initial state as if it was just installed.
+     *
+     * @param appId The app ID to clear state for. If null, clears state for the current app
+     */
     fun clearState(appId: String? = null) {
         if (appId == null) {
             commands.add("- clearState")
@@ -68,5 +97,9 @@ internal class AppCommands(private val commands: MutableList<String>) {
         }
     }
 
+    /**
+     * Clears the iOS keychain. This is iOS-specific and has no effect on Android.
+     * Removes all stored credentials and security tokens.
+     */
     fun clearKeychain() = commands.add("- clearKeychain")
 }
