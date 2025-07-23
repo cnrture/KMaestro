@@ -26,7 +26,7 @@ Add KMaestro to your project:
 
 ```kotlin
 dependencies {
-    testImplementation("com.canerture:kmaestro:0.0.1")
+    testImplementation("com.github.canerture:kmaestro:0.0.1")
 }
 ```
 
