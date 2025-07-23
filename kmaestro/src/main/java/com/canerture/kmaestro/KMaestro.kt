@@ -246,9 +246,7 @@ class KMaestro(
      * assertNoDefectsWithAI()
      * ```
      */
-    fun assertNoDefectsWithAI() {
-        commands.add("- assertNoDefectsWithAi")
-    }
+    fun assertNoDefectsWithAI() = commands.add("- assertNoDefectsWithAi")
 
     /**
      * Navigates back in the app (equivalent to pressing the back button).
