@@ -3,6 +3,7 @@ import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 plugins {
     alias(libs.plugins.android.library)
     alias(libs.plugins.kotlin.android)
+    id("maven-publish")
 }
 
 android {
@@ -24,5 +25,18 @@ android {
     }
     kotlin {
         compilerOptions.jvmTarget.set(JvmTarget.JVM_11)
+    }
+}
+
+publishing {
+    publications {
+        create<MavenPublication>("release") {
+            groupId = "com.github.canerture"
+            artifactId = "kmaestro"
+            version = "1.0.0"
+            afterEvaluate {
+                from(components["release"])
+            }
+        }
     }
 }
