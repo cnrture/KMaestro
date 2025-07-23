@@ -1,4 +1,6 @@
-package com.canerture.kmaestro
+package com.canerture.kmaestro.commands
+
+import com.canerture.kmaestro.Direction
 
 internal class InteractionCommands(private val commands: MutableList<String>) {
 

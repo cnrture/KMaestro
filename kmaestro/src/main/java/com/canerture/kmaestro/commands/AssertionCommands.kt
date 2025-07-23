@@ -1,4 +1,4 @@
-package com.canerture.kmaestro
+package com.canerture.kmaestro.commands
 
 internal class AssertionCommands(private val commands: MutableList<String>) {
 

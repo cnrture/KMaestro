@@ -1,4 +1,4 @@
-package com.canerture.kmaestro
+package com.canerture.kmaestro.commands
 
 internal class ScriptCommands(private val commands: MutableList<String>) {
 

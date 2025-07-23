@@ -1,4 +1,6 @@
-package com.canerture.kmaestro
+package com.canerture.kmaestro.commands
+
+import com.canerture.kmaestro.KeyType
 
 internal class DeviceCommands(private val commands: MutableList<String>) {
 

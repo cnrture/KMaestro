@@ -1,4 +1,4 @@
-package com.canerture.kmaestro
+package com.canerture.kmaestro.commands
 
 internal class WaitCommands(private val commands: MutableList<String>) {
 

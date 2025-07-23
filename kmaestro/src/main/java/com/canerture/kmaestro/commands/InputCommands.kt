@@ -1,4 +1,4 @@
-package com.canerture.kmaestro
+package com.canerture.kmaestro.commands
 
 internal class InputCommands(private val commands: MutableList<String>) {
 

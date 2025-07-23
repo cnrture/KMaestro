@@ -1,5 +1,13 @@
 package com.canerture.kmaestro
 
+import com.canerture.kmaestro.commands.AppCommands
+import com.canerture.kmaestro.commands.AssertionCommands
+import com.canerture.kmaestro.commands.DeviceCommands
+import com.canerture.kmaestro.commands.InputCommands
+import com.canerture.kmaestro.commands.InteractionCommands
+import com.canerture.kmaestro.commands.RecordingCommands
+import com.canerture.kmaestro.commands.ScriptCommands
+import com.canerture.kmaestro.commands.WaitCommands
 import java.io.File
 
 /**
