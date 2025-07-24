@@ -18,9 +18,6 @@ import java.io.File
  *
  * @param path The directory path where the YAML file will be saved
  * @param yamlName The name of the YAML file (without .yaml extension)
- *
- * @author KMaestro Team
- * @since 1.0.0
  */
 class KMaestro(
     private val path: String,
