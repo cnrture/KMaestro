@@ -26,7 +26,7 @@ class KMaestro(
     config: (KMaestro.() -> Unit)? = null
 ) {
 
-    private var commands = mutableListOf<String>()
+    private val commands = mutableListOf<String>()
 
     // Command builders
     private val appCommands = AppCommands(commands)
