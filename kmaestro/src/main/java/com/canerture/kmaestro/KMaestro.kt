@@ -25,6 +25,7 @@ import java.io.File
 class KMaestro(
     private val path: String,
     private val yamlName: String,
+    envValues: Map<String, Any>? = null,
     config: (KMaestro.() -> Unit)? = null
 ) {
 
@@ -42,6 +43,12 @@ class KMaestro(
 
     init {
         commands.add("# $yamlName\n")
+        envValues?.let { env ->
+            commands.add("env:")
+            env.forEach { (key, value) ->
+                commands.add("  $key: $value")
+            }
+        }
         config?.invoke(this)
         build()
     }
