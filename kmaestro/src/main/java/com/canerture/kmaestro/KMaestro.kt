@@ -52,7 +52,7 @@ class KMaestro(
         clearState: Boolean = false,
         clearKeychain: Boolean = false,
         stopApp: Boolean = true,
-        permissions: Map<String, String>? = null,
+        permissions: Map<Permission, PermissionState>? = null,
         arguments: Map<String, Any> = emptyMap(),
     ) = appCommands.launchApp(appId, clearState, clearKeychain, stopApp, permissions, arguments)
 

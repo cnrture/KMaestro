@@ -1,5 +1,8 @@
 package com.canerture.kmaestro.commands
 
+import com.canerture.kmaestro.Permission
+import com.canerture.kmaestro.PermissionState
+
 internal class AppCommands(private val commands: MutableList<String>) {
 
     /**
@@ -18,7 +21,7 @@ internal class AppCommands(private val commands: MutableList<String>) {
         clearState: Boolean = false,
         clearKeychain: Boolean = false,
         stopApp: Boolean = true,
-        permissions: Map<String, String>? = null,
+        permissions: Map<Permission, PermissionState>? = null,
         arguments: Map<String, Any> = emptyMap(),
     ) {
         val launchCommand = StringBuilder("- launchApp")
@@ -33,7 +36,7 @@ internal class AppCommands(private val commands: MutableList<String>) {
             permissions?.let { perms ->
                 launchCommand.append("\n    permissions:")
                 perms.forEach { (key, value) ->
-                    launchCommand.append("\n      $key: \"$value\"")
+                    launchCommand.append("\n      ${key.value}: \"${value.value}\"")
                 }
             }
 

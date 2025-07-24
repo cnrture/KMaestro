@@ -34,8 +34,8 @@ fun testLaunchAppCommands() {
             clearKeychain = true,
             stopApp = false,
             permissions = mapOf(
-                "notifications" to "deny",
-                "location" to "allow"
+                Permission.NOTIFICATIONS to PermissionState.DENY,
+                Permission.CAMERA to PermissionState.ALLOW,
             ),
             arguments = mapOf(
                 "testMode" to true,
