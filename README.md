@@ -1,8 +1,7 @@
 # 🎭 KMaestro
 
-[![Kotlin](https://img.shields.io/badge/kotlin-1.9.10-blue.svg)](https://kotlinlang.org)
-[![License](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
-[![API](https://img.shields.io/badge/API-26%2B-brightgreen.svg?style=flat)](https://android-arsenal.com/api?level=26)
+[![Kotlin](https://img.shields.io/badge/kotlin-2.2.0-blue.svg)](https://kotlinlang.org)
+[![License](https://img.shields.io/badge/License-APACHE-yellow.svg)](https://opensource.org/licenses/APACHE)
 
 **KMaestro** is a type-safe, fluent Kotlin DSL for creating [Maestro](https://maestro.mobile.dev)
 mobile testing flows. Write beautiful, maintainable test automation code with full IDE support and
@@ -27,7 +26,7 @@ Add KMaestro to your project:
 
 ```kotlin
 dependencies {
-    testImplementation("com.canerture:kmaestro:1.0.0")
+    implementation("com.github.canerture:kmaestro:0.0.1")
 }
 ```
 
@@ -37,10 +36,10 @@ dependencies {
 import com.canerture.kmaestro.KMaestro
 
 fun createLoginTest() {
-    val loginFlow = KMaestro(
+    KMaestro(
         path = "maestro",
         yamlName = "login_test"
-    ).apply {
+    ) {
         // Launch the app
         launchApp(
             appId = "com.example.app",
@@ -59,7 +58,7 @@ fun createLoginTest() {
         // Verify successful login
         assertVisible(text = "Welcome")
         takeScreenshot("login_success")
-    }.build()
+    }
     
     println("Generated YAML saved to: maestro/login_test.yaml")
 }
@@ -462,9 +461,6 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 ## 🔗 Links
 
 - [Maestro Documentation](https://maestro.mobile.dev)
-- [API Reference](https://your-docs-site.com/api)
-- [Examples Repository](https://github.com/your-org/kmaestro-examples)
-- [Issue Tracker](https://github.com/your-org/kmaestro/issues)
 
 ## ⭐ Acknowledgments
 
