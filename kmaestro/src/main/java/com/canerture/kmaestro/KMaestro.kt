@@ -28,7 +28,6 @@ class KMaestro(
 
     private val commands = mutableListOf<String>()
 
-    // Command builders
     private val appCommands = AppCommands(commands)
     private val inputCommands = InputCommands(commands)
     private val interactionCommands = InteractionCommands(commands)
@@ -50,7 +49,6 @@ class KMaestro(
         build()
     }
 
-    // App-related commands delegation
     fun launchApp(
         appId: String? = null,
         clearState: Boolean = false,
@@ -65,7 +63,6 @@ class KMaestro(
     fun clearState(appId: String? = null) = appCommands.clearState(appId)
     fun clearKeychain() = appCommands.clearKeychain()
 
-    // Input-related commands delegation
     fun inputText(text: String) = inputCommands.inputText(text)
     fun inputRandomEmail() = inputCommands.inputRandomEmail()
     fun inputRandomPersonName() = inputCommands.inputRandomPersonName()
@@ -78,7 +75,6 @@ class KMaestro(
 
     fun pasteText() = inputCommands.pasteText()
 
-    // Interaction commands delegation
     fun tapOn(
         text: String? = null,
         id: String? = null,
@@ -166,7 +162,6 @@ class KMaestro(
 
     fun back() = interactionCommands.back()
 
-    // Assertion commands delegation
     fun assertVisible(
         text: String? = null,
         id: String? = null,
@@ -191,7 +186,6 @@ class KMaestro(
     fun assertWithAI(description: String) = assertionCommands.assertWithAI(description)
     fun assertNoDefectsWithAI() = assertionCommands.assertNoDefectsWithAI()
 
-    // Device commands delegation
     fun setAirplaneMode(enabled: Boolean) = deviceCommands.setAirplaneMode(enabled)
     fun toggleAirplaneMode() = deviceCommands.toggleAirplaneMode()
     fun setLocation(latitude: Double, longitude: Double) =
@@ -207,7 +201,6 @@ class KMaestro(
 
     fun takeScreenshot(fileName: String = "screenshot") = deviceCommands.takeScreenshot(fileName)
 
-    // Wait commands delegation
     fun waitForAnimationToEnd(timeout: Int = 5000) = waitCommands.waitForAnimationToEnd(timeout)
     fun extendedWaitUntil(
         visible: Map<String, Any>? = null,
@@ -215,7 +208,6 @@ class KMaestro(
         timeout: Int = 10000
     ) = waitCommands.extendedWaitUntil(visible, notVisible, timeout)
 
-    // Script commands delegation
     fun evalScript(script: String) = scriptCommands.evalScript(script)
     fun runScript(script: String, env: Map<String, String>? = null) =
         scriptCommands.runScript(script, env)
@@ -224,11 +216,9 @@ class KMaestro(
     fun extractTextWithAI(description: String): String =
         scriptCommands.extractTextWithAI(description)
 
-    // Recording commands delegation
     fun startRecording(fileName: String = "recording") = recordingCommands.startRecording(fileName)
     fun stopRecording() = recordingCommands.stopRecording()
 
-    // Control flow commands
     fun repeat(times: Int, commands: List<String>) {
         this.commands.add("- repeat:")
         this.commands.add("    times: $times")
