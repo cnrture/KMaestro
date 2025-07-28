@@ -7,6 +7,11 @@
     <depends>com.intellij.modules.platform</depends>
     <depends>com.intellij.modules.lang</depends>
     <depends>com.intellij.modules.java</depends>
+    <depends>org.jetbrains.kotlin</depends>
+
+    <extensions defaultExtensionNs="org.jetbrains.kotlin">
+        <supportsKotlinPluginMode supportsK2="true"/>
+    </extensions>
 
     <extensions defaultExtensionNs="com.intellij">
         <toolWindow
@@ -14,5 +19,8 @@
                 id="KMaestro"
                 anchor="bottom"
                 icon="/icons/pluginIcon.svg"/>
+        <codeInsight.lineMarkerProvider
+                language="kotlin"
+                implementationClass="com.github.cnrture.kmaestro.gutter.KMaestroGutterIconProvider"/>
     </extensions>
 </idea-plugin>
