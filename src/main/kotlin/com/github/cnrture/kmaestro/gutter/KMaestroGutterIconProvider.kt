@@ -1,9 +1,11 @@
 package com.github.cnrture.kmaestro.gutter
 
+import com.github.cnrture.kmaestro.services.MaestroService
 import com.intellij.codeInsight.daemon.GutterIconNavigationHandler
 import com.intellij.codeInsight.daemon.LineMarkerInfo
 import com.intellij.codeInsight.daemon.LineMarkerProvider
 import com.intellij.icons.AllIcons
+import com.intellij.openapi.components.service
 import com.intellij.openapi.editor.markup.GutterIconRenderer
 import com.intellij.openapi.fileEditor.FileEditorManager
 import com.intellij.openapi.project.Project
@@ -63,6 +65,7 @@ class KMaestroGutterIconProvider : LineMarkerProvider {
             functionElement: PsiElement,
             project: Project,
         ): JComponent {
+            val maestroService = project.service<MaestroService>()
             val panel = JPanel(BorderLayout())
             val buttonPanel = JPanel(java.awt.GridLayout(0, 1, 5, 5))
 
@@ -73,7 +76,20 @@ class KMaestroGutterIconProvider : LineMarkerProvider {
 
             val runTestButton = JButton("Run Maestro Test")
             runTestButton.addActionListener {
-                // This is a placeholder for the actual implementation
+                val lines = functionElement.text.split("\n")
+                val path = lines.find { it.contains("path") }?.substringAfter("path = ")?.trim()?.trimEnd('"')?.trimEnd(',')?.replace("\"", "") ?: return@addActionListener
+                val yamlName = lines.find { it.contains("yamlName") }?.substringAfter("yamlName = ")?.trim()?.trimEnd('"')?.trimEnd(',')?.replace("\"", "") ?: return@addActionListener
+                println(path)
+                println(yamlName)
+                maestroService.runMaestroTest("$path/$yamlName.yaml").thenAccept { result ->
+                    val message = if (result.success) {
+                        "Test completed successfully:\n${result.output}"
+                    } else {
+                        "Test failed with exit code ${result.exitCode}:\n${result.output}"
+                    }
+                    println("Maestro Test Result: $message")
+                    JBPopupFactory.getInstance().createMessage(message).showInFocusCenter()
+                }
             }
 
             buttonPanel.add(createYamlButton)
