@@ -40,6 +40,7 @@ dependencies {
     implementation(compose.desktop.currentOs)
     implementation(compose.materialIconsExtended)
     implementation(libs.freemarker)
+    implementation(files("libs/kmaestro-library-new.jar"))
 
     // IntelliJ Platform Gradle Plugin Dependencies Extension - read more: https://plugins.jetbrains.com/docs/intellij/tools-intellij-platform-gradle-plugin-dependencies-extension.html
     intellijPlatform {
@@ -138,6 +139,11 @@ tasks {
 
     publishPlugin {
         dependsOn(patchChangelog)
+    }
+
+    // Skip buildSearchableOptions for publishing
+    buildSearchableOptions {
+        enabled = false
     }
 }
 
